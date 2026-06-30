@@ -1,0 +1,189 @@
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/GeistMono-Variable.woff2") format("woff2");
+}
+
+:root {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --green-500: oklch(0.723 0.219 149.579);
+  --command-foreground: var(--green-500);
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  --text-xs: 0.75rem;
+  --leading-normal: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  padding: 0 10px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  max-width: 450px;
+  margin: 70px auto 40px;
+}
+
+p {
+  margin: 0 0 18px;
+}
+
+strong {
+  background-color: var(--foreground);
+  color: var(--background);
+  font-weight: 400;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.js strong {
+  position: relative;
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+.js strong::after {
+  position: absolute;
+  inset: 0;
+  background-color: var(--foreground);
+  content: "";
+  mix-blend-mode: difference;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.js strong.state-highlighted::after {
+  transform: scaleX(1);
+  transition: transform 650ms linear;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 42px;
+  color: var(--muted-foreground);
+}
+
+header > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--foreground);
+}
+
+header time {
+  white-space: nowrap;
+}
+
+.prompt {
+  color: var(--command-foreground);
+}
+
+.prompt::before {
+  margin-right: 1ch;
+  content: "%";
+}
+
+.state-typing::after,
+.state-cursor::after {
+  display: inline-block;
+  width: 0.62em;
+  height: 1em;
+  margin-left: 0;
+  vertical-align: -0.14em;
+  background-color: currentColor;
+  content: "";
+  animation: blink 900ms steps(1, end) infinite;
+}
+
+section > p:first-child {
+  margin-bottom: 24px;
+}
+
+.js section {
+  visibility: hidden;
+}
+
+.js section.state-ready {
+  visibility: visible;
+}
+
+.js .email-command {
+  visibility: hidden;
+}
+
+.js .email-command.state-ready {
+  visibility: visible;
+}
+
+.email-command {
+  margin-bottom: 0;
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 18px;
+  margin-top: 42px;
+  color: var(--muted-foreground);
+}
+
+footer span,
+footer a {
+  white-space: nowrap;
+}
+
+@keyframes blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js strong.state-highlighted::after {
+    transition: none;
+  }
+
+  .state-typing::after,
+  .state-cursor::after {
+    animation: none;
+  }
+
+  .js section {
+    visibility: visible;
+  }
+}
