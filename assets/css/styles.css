@@ -112,7 +112,8 @@ header time {
 }
 
 .state-typing::after,
-.state-cursor::after {
+.state-cursor::after,
+.email-command.state-ready::after {
   display: inline-block;
   width: 0.62em;
   height: 1em;
@@ -121,6 +122,10 @@ header time {
   background-color: currentColor;
   content: "";
   animation: blink 900ms steps(1, end) infinite;
+}
+
+.email-command.state-commanding::after {
+  display: none;
 }
 
 section > p:first-child {
@@ -141,6 +146,15 @@ section > p:first-child {
 
 .js .email-command.state-ready {
   visibility: visible;
+}
+
+.js [data-output-command] {
+  display: none;
+}
+
+.js [data-output-command].state-typing,
+.js [data-output-command].state-cursor {
+  display: inline;
 }
 
 .email-command {
@@ -179,7 +193,8 @@ footer a {
   }
 
   .state-typing::after,
-  .state-cursor::after {
+  .state-cursor::after,
+  .email-command.state-ready::after {
     animation: none;
   }
 

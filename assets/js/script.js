@@ -62,7 +62,7 @@
       target.classList.add("state-cursor");
     }
 
-    await wait(180);
+    await wait(240);
   }
 
   async function run() {
@@ -91,6 +91,7 @@
     }
 
     section.classList.add("state-ready");
+    emailCommand.classList.add("state-ready");
 
     if (!reducedMotion) {
       await wait(250);
@@ -101,12 +102,13 @@
         await wait(650);
       }
 
-      emailCommand.classList.add("state-ready");
+      await wait(240);
+      emailCommand.classList.add("state-commanding");
       await type(email);
     } else {
       syncStatementHighlight();
       window.addEventListener("resize", scheduleStatementHighlightSync);
-      emailCommand.classList.add("state-ready");
+      emailCommand.classList.add("state-commanding");
       email.classList.add("state-cursor");
     }
 
