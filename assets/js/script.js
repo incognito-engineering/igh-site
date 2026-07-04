@@ -68,45 +68,15 @@
   async function run() {
     var command = document.querySelector("[data-type]");
     var section = document.querySelector("section");
-    var statement = document.querySelector("section strong");
     var output = document.querySelector("[data-output-command]");
     var outputCommand = output ? output.closest(".output-command") : null;
-    var resizeFrame;
 
     if (!section) {
       return;
     }
 
-    function statementFits() {
-      if (!statement) {
-        return false;
-      }
-
-      return statement.getClientRects().length === 1;
-    }
-
-    function syncStatementHighlight() {
-      if (!statement) {
-        return;
-      }
-
-      statement.classList.toggle("state-highlighted", statementFits());
-    }
-
-    function scheduleStatementHighlightSync() {
-      window.cancelAnimationFrame(resizeFrame);
-      resizeFrame = window.requestAnimationFrame(syncStatementHighlight);
-    }
-
     if (!command || !output || !outputCommand) {
       section.classList.add("state-ready");
-      syncStatementHighlight();
-      window.addEventListener("resize", scheduleStatementHighlightSync);
-
-      if (document.fonts) {
-        document.fonts.ready.then(syncStatementHighlight);
-      }
-
       return;
     }
 
@@ -121,17 +91,9 @@
       await wait(250);
       outputCommand.classList.add("state-commanding");
       await type(output);
-      syncStatementHighlight();
-      window.addEventListener("resize", scheduleStatementHighlightSync);
     } else {
       outputCommand.classList.add("state-commanding");
       output.classList.add("state-cursor");
-      syncStatementHighlight();
-      window.addEventListener("resize", scheduleStatementHighlightSync);
-    }
-
-    if (document.fonts) {
-      document.fonts.ready.then(syncStatementHighlight);
     }
   }
 
