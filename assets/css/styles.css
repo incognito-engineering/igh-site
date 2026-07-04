@@ -35,8 +35,6 @@ body {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   line-height: var(--leading-normal);
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -46,7 +44,7 @@ main {
 }
 
 p {
-  margin: 0 0 18px;
+  margin: 0;
 }
 
 strong {
@@ -118,9 +116,9 @@ header time {
 
 .state-typing::after,
 .state-cursor::after,
-.email-command.state-ready::after {
+.output-command.state-ready::after {
   display: inline-block;
-  width: 0.62em;
+  width: 1ch;
   height: 1em;
   margin-left: 0;
   vertical-align: -0.14em;
@@ -129,12 +127,8 @@ header time {
   animation: blink 900ms steps(1, end) infinite;
 }
 
-.email-command.state-commanding::after {
+.output-command.state-commanding::after {
   display: none;
-}
-
-section > p:first-child {
-  margin-bottom: 24px;
 }
 
 .js section {
@@ -145,11 +139,11 @@ section > p:first-child {
   visibility: visible;
 }
 
-.js .email-command {
+.js .output-command {
   visibility: hidden;
 }
 
-.js .email-command.state-ready {
+.js .output-command.state-ready {
   visibility: visible;
 }
 
@@ -162,8 +156,14 @@ section > p:first-child {
   display: inline;
 }
 
-.email-command {
-  margin-bottom: 0;
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+section + .prompt {
+  margin-top: 1rem;
 }
 
 footer {
@@ -199,7 +199,7 @@ footer a {
 
   .state-typing::after,
   .state-cursor::after,
-  .email-command.state-ready::after {
+  .output-command.state-ready::after {
     animation: none;
   }
 

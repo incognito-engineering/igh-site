@@ -69,15 +69,27 @@
     var command = document.querySelector("[data-type]");
     var section = document.querySelector("section");
     var statement = document.querySelector("section strong");
-    var email = document.querySelector("[data-output-command]");
-    var emailCommand = email.closest(".email-command");
+    var output = document.querySelector("[data-output-command]");
+    var outputCommand = output ? output.closest(".output-command") : null;
     var resizeFrame;
 
+    if (!section) {
+      return;
+    }
+
     function statementFits() {
+      if (!statement) {
+        return false;
+      }
+
       return statement.getClientRects().length === 1;
     }
 
     function syncStatementHighlight() {
+      if (!statement) {
+        return;
+      }
+
       statement.classList.toggle("state-highlighted", statementFits());
     }
 
@@ -86,30 +98,36 @@
       resizeFrame = window.requestAnimationFrame(syncStatementHighlight);
     }
 
+    if (!command || !output || !outputCommand) {
+      section.classList.add("state-ready");
+      syncStatementHighlight();
+      window.addEventListener("resize", scheduleStatementHighlightSync);
+
+      if (document.fonts) {
+        document.fonts.ready.then(syncStatementHighlight);
+      }
+
+      return;
+    }
+
     if (!reducedMotion) {
       await type(command);
     }
 
     section.classList.add("state-ready");
-    emailCommand.classList.add("state-ready");
+    outputCommand.classList.add("state-ready");
 
     if (!reducedMotion) {
       await wait(250);
+      outputCommand.classList.add("state-commanding");
+      await type(output);
       syncStatementHighlight();
       window.addEventListener("resize", scheduleStatementHighlightSync);
-
-      if (statement.classList.contains("state-highlighted")) {
-        await wait(650);
-      }
-
-      await wait(240);
-      emailCommand.classList.add("state-commanding");
-      await type(email);
     } else {
+      outputCommand.classList.add("state-commanding");
+      output.classList.add("state-cursor");
       syncStatementHighlight();
       window.addEventListener("resize", scheduleStatementHighlightSync);
-      emailCommand.classList.add("state-commanding");
-      email.classList.add("state-cursor");
     }
 
     if (document.fonts) {
@@ -119,10 +137,19 @@
 
   function start() {
     var clock = document.createElement("time");
+    var currentYear = document.getElementById("current-year");
+    var header = document.querySelector("header");
 
-    document.getElementById("current-year").textContent = new Date().getFullYear();
+    if (currentYear) {
+      currentYear.textContent = new Date().getFullYear();
+    }
+
+    if (!header) {
+      return;
+    }
+
     clock.id = "terminal-clock";
-    document.querySelector("header").appendChild(clock);
+    header.appendChild(clock);
     updateClock();
     window.setInterval(updateClock, 1000);
     run();
