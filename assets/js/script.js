@@ -66,9 +66,10 @@
   }
 
   async function run() {
-    var command = document.querySelector("[data-type]");
+    var commands = document.querySelectorAll("[data-command]");
+    var command = commands[0];
     var section = document.querySelector("section");
-    var output = document.querySelector("[data-output-command]");
+    var output = commands[1];
     var outputCommand = output ? output.closest(".output-command") : null;
 
     if (!section) {

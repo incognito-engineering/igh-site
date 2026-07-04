@@ -117,12 +117,12 @@ header time {
   visibility: visible;
 }
 
-.js [data-output-command] {
+.js .output-command [data-command] {
   display: none;
 }
 
-.js [data-output-command].state-typing,
-.js [data-output-command].state-cursor {
+.js .output-command [data-command].state-typing,
+.js .output-command [data-command].state-cursor {
   display: inline;
 }
 
